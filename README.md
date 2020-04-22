@@ -1,9 +1,9 @@
-Simple Trip Manager V.1.0
+# Simple Trip Manager V.1.0
 
-Definition:
+## Definition:
  - Simple Trip Manager that allow diferrent trips information from a trip selected.
 
-Uses:
+## Uses:
  - React, as main ¡UI library
  - Hooks
  - googlemap-react, fork from google-map in react
@@ -14,7 +14,7 @@ Uses:
 
 First CRA from [Create React App](https://github.com/facebook/create-react-app).
 
-The filesystem structure is the following:
+## The filesystem structure is the following:
 
 - public
 - src
