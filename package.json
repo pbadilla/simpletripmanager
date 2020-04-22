@@ -1,86 +1,56 @@
 {
   "name": "simpletripmanager",
-  "author": "Pachi Badilla Roldán | pachibadilla@gmail.com",
-  "version": "1.0.0",
-  "description": "Simple TRIP MANAGER displaying stops and routes",
-  "main": "src/index.js",
-  "scripts": {
-    "start": "webpack --config config/webpack.dev.js",
-    "build": "webpack --config config/webpack.prod.js",
-    "test": "npm run test:unit:unit && npm run test:sonar",
-    "test:unit": "jest",
-    "test:unit:sonar": "jest --coverage",
-    "test:watch": "jest --watch",
-    "format": "prettier --write 'src/**/*.{js,scss}'",
-    "lint": "eslint src"
-  },
-  "repository": {
-    "type": "git",
-    "url": ""
-  },
-  "keywords": [
-    "react"
-  ],
-  "private": true,
+  "description": "Simple Trip Manager",
+  "author": "pachi badilla",
+  "version": "0.1.0",
+  "private": false,
   "dependencies": {
-    "axios": "^0.18.0",
-    "google-map-react": "^1.1.5",
-    "lodash": "^4.17.11",
-    "prop-types": "^15.7.2",
-    "react": "^16.12.0",
-    "react-autocomplete": "^1.8.1",
-    "react-content-loader": "^4.3.0",
-    "react-media": "^1.9.2",
-    "styled-components": "^4.4.0"
+    "@googlemap-react/core": "^0.1.11",
+    "axios": "^0.19.0",
+    "enzyme": "^3.11.0",
+    "google-map-react": "^1.1.7",
+    "import-google-fonts": "^0.0.2",
+    "lodash": "^4.17.15",
+    "lodash.isempty": "^4.4.0",
+    "moving-letters": "^1.0.1",
+    "npm": "^6.14.4",
+    "pcln-design-system": "^3.3.0",
+    "react": "^16.9.0",
+    "react-dom": "^16.9.0",
+    "react-loading": "^2.0.3",
+    "react-loading-skeleton": "^2.0.1",
+    "react-redux": "^7.1.1",
+    "react-responsive-modal": "^5.0.2",
+    "react-scripts": "^3.4.1",
+    "redux": "^4.0.4",
+    "redux-thunk": "^2.3.0",
+    "styled-components": "^5.1.0",
+    "styled-css-grid": "^1.2.1",
+    "styled-reset": "^4.1.3",
+    "use-react-modal": "^0.0.9"
   },
-  "devDependencies": {
-    "@babel/core": "^7.4.0",
-    "@babel/plugin-syntax-dynamic-import": "^7.2.5",
-    "@babel/plugin-transform-runtime": "^7.8.3",
-    "@babel/preset-env": "^7.2.5",
-    "@babel/preset-react": "^7.2.5",
-    "babel-core": "^7.0.0-bridge.0",
-    "babel-eslint": "^10.0.0",
-    "babel-jest": "^24.9.0",
-    "babel-loader": "^8.0.2",
-    "babel-plugin-styled-components": "^1.10.6",
-    "babel-plugin-transform-class-properties": "^6.24.1",
-    "babel-plugin-transform-react-remove-prop-types": "^0.4.24",
-    "enzyme": "^3.10.0",
-    "enzyme-adapter-react-16": "^1.14.0",
-    "enzyme-react-intl": "^2.0.6",
-    "eslint": "^5.11.1",
-    "eslint-config-airbnb": "^17.1.0",
-    "eslint-config-prettier": "^6.0.0",
-    "eslint-plugin-prettier": "^3.0.1",
-    "eslint-plugin-jest": "^22.15.1",
-    "eslint-plugin-jsx-a11y": "^6.1.1",
-    "eslint-plugin-react": "^7.14.2",
-    "eslint-plugin-react-hooks": "^1.6.1",
-    "jest": "^24.9.0",
-    "jest-localstorage-mock": "^2.4.0",
-    "jest-styled-components": "^6.3.3",
-    "nock": "^10.0.6",
-    "react-test-renderer": "^16.8.6",
-    "stats-webpack-plugin": "^0.7.0",
-    "prettier": "^1.16.4",
-    "webpack": "^4.19.0",
-    "webpack-bundle-analyzer": "^3.3.2",
-    "webpack-cli": "^3.1.0",
-    "webpack-merge": "^4.1.4"
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
   },
   "eslintConfig": {
     "extends": "react-app"
   },
-  "browserslist": [
-    ">0.2%",
-    "not dead",
-    "not ie <= 11",
-    "not op_mini all"
-  ],
-  "babel": {
-    "presets": [
-      "react-app"
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "google-maps-react": "^2.0.2",
+    "react-app-rewired": "^2.1.5"
   }
 }
