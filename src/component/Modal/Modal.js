@@ -2,14 +2,13 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useSelector, useDispatch, connect } from "react-redux";
 import get from 'lodash/get';
-import isEmpty from 'lodash/isEmpty';
 import { toMinutes } from '../../helpers/utils';
 
 import fetchStops from '../../store/actions/stopsActions';
 
 import Modal from 'react-responsive-modal';
 
-import { Button, Table, Text, Heading, Icon } from 'pcln-design-system';
+import { Button, Heading, Icon } from 'pcln-design-system';
 import { ContentStop } from './styles';
 import "react-responsive-modal/styles.css";
 
@@ -18,7 +17,6 @@ const ModalBox = ({ tripId, stopInfo }) => {
   const dispatch = useDispatch();
 
   const loadingSucess = useSelector(state => state.stopTrip.success);
-  const stopInfoData = useSelector(state => state.stopTrip.stopTrip);
 
   const [open, setOpen] = useState(false);
   const [loadData, setLoadData] = useState(false);
@@ -43,13 +41,13 @@ const ModalBox = ({ tripId, stopInfo }) => {
 
     return (
       <div>
-        <Button onClick={onOpenModal}>Open modal</Button>
+        <Button size='small' onClick={onOpenModal}>{`More Info ${tripId}`}</Button>
         <Modal open={open} onClose={onCloseModal} little>
-          <Heading.h2>Datos parada</Heading.h2>
+          <Heading.h2>Information Stop</Heading.h2>
 
           {loadData && 
             <ContentStop>
-                <table cellspacing="0">
+                <table cellSacing="0">
                 <thead>
                   <tr>
                     <th>Username</th>
@@ -69,7 +67,6 @@ const ModalBox = ({ tripId, stopInfo }) => {
               </table>
             </ContentStop>
           }
-
         </Modal>
       </div>
     );
@@ -82,7 +79,6 @@ ModalBox.propTypes = {
 
 
 const mapStateToProps = state => {
-  console.log('state', state);
   return ({
     stopInfo: state.stopTrip,
   });

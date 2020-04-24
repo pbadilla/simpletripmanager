@@ -29,19 +29,135 @@
       Learn how to configure a non-root public URL by running `npm run build`.
     -->
     <title>React App</title>
+    <style>
+      @keyframes loaderDots1 {
+        0%   { transform: scale(0) }
+        100% { transform: scale(1) }
+      }
+
+      @keyframes loaderDots2 {
+        0%   { transform: translate(0, 0) }
+        100% { transform: translate(19px, 0) }
+      }
+
+      @keyframes loaderDots3 {
+        0%   { transform: scale(1) }
+        100% { transform: scale(0) }
+      }
+
+      @font-face {
+        font-family: 'Roboto';
+        font-style: normal;
+        font-weight: normal;
+        font-display: swap;
+        src: url('/public/fonts/roboto/roboto.eot');
+        src: local('Roboto'),
+          url('/public/fonts/roboto/roboto.eot?#iefix') format('embedded-opentype'),
+          url('/public/fonts/roboto/roboto.woff2') format('woff2'),
+          url('/public/fonts/roboto/roboto.woff') format('woff'),
+          url('/public/fonts/roboto/roboto.ttf') format('truetype'),
+          url('/public/fonts/roboto/roboto.svg#Roboto') format('svg');
+      }
+
+      @font-face {
+        font-family: 'Roboto';
+        font-style: normal;
+        font-weight: bold;
+        font-display: swap;
+        src: url('/public/fonts/roboto/roboto-bold.eot');
+        src: local('Roboto Bold'),
+          url('/public/fonts/roboto/roboto-bold.eot?#iefix') format('embedded-opentype'),
+          url('/public/fonts/roboto/robotoBold.woff2') format('woff2'), /* For some unexplained reason the font is not working when named "roboto-bold.woff2" */
+          url('/public/fonts/roboto/roboto-bold.woff') format('woff'),
+          url('/public/fonts/roboto/roboto-bold.ttf') format('truetype'),
+          url('/public/fonts/roboto/roboto-bold.svg#Roboto') format('svg');
+      }
+
+      .loading {
+        background-color: white;
+        bottom: 0;
+        left: 0;
+        position: fixed;
+        right: 0;
+        top: 0;
+        width: 100%;
+        z-index: 100;
+      }
+
+      .banner-loading {
+        background-color: #049;
+        color: white;
+        font-size: 2rem;
+        margin: 35vh 0 0;
+        padding: 1.5em 0 1em;
+        display: flex;
+        align-self: center;
+        align-content: center;
+        justify-self: center;
+      }
+
+      .banner-loading div {
+        margin: 0 auto;
+        text-align: center;
+      }
+
+      .loaderDots {
+        display: flex;
+        position: relative;
+        width: 64px;
+        align-items: center;
+        text-align: center;
+        margin: 0 auto;
+      }
+
+      .loaderDots div {
+        position: absolute;
+        top: 27px;
+        width: 11px;
+        height: 11px;
+        border-radius: 50%;
+        background: #049;
+        animation-timing-function: cubic-bezier(0, 1, 1, 0);
+      }
+
+      .loaderDots div:nth-child(1) {
+        left: 6px;
+        animation: loaderDots1 0.6s infinite;
+      }
+
+      .loaderDots div:nth-child(2) {
+        left: 6px;
+        animation: loaderDots2 0.6s infinite;
+      }
+
+      .loaderDots div:nth-child(3) {
+        left: 26px;
+        animation: loaderDots2 0.6s infinite;
+      }
+
+      .loaderDots div:nth-child(4) {
+        left: 45px;
+        animation: loaderDots3 0.6s infinite;
+      }
+    </style>
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
-    <!--
-      This HTML file is a template.
-      If you open it directly in the browser, you will see an empty page.
-
-      You can add webfonts, meta tags, or analytics to this file.
-      The build step will place the bundled scripts into the <body> tag.
-
-      To begin the development, run `npm start` or `yarn start`.
-      To create a production bundle, use `npm run build` or `yarn build`.
-    -->
+    <!-- LOADER PAGE -->
+    <div id="overlay" class="loading">
+      <div class="banner-loading">
+        <div>
+          <svg viewBox="0 0 24 24" height="30" width="30" title="SimpleTripManager Logo" aria-hidden="true" fill="currentcolor" tabindex="-1" focusable="false" color="white" class="sc-Axmtr hMSEyt sc-fznxKY gQNKul sc-pAyMl csqRTw" role="img"><title>Cars</title><path d="M18.9 5c-.2-.6-.8-1-1.4-1h-11c-.7 0-1.2.4-1.4 1L3 11v8c0 .6.4 1 1 1h1c.5 0 1-.4 1-1v-1h12v1c0 .6.4 1 1 1h1c.5 0 1-.4 1-1v-8l-2.1-6zM6.5 15c-.8 0-1.5-.7-1.5-1.5S5.7 12 6.5 12s1.5.7 1.5 1.5S7.3 15 6.5 15zm11 0c-.8 0-1.5-.7-1.5-1.5s.7-1.5 1.5-1.5 1.5.7 1.5 1.5-.7 1.5-1.5 1.5zM5 10l1.5-4.5h11L19 10H5z"></path></svg>
+          <img src="/images/Logo.png" alt="Logo Simple Trip Manager" />
+          </div>
+      </div>
+      <div class="loaderDots">
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+      </div>
+    </div>
   </body>
 </html>

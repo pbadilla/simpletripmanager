@@ -35,5 +35,3 @@ export default function trips(state = initialState, action) {
       return state;
   }
 }
-
-export const getTrips = state => state.trips;

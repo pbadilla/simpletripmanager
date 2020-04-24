@@ -2,13 +2,15 @@ import styled from 'styled-components';
 import colors from '../../styles/colors';
 
 export const BoxCard = styled.div`
-  border-bottom: 1px solid black;
   background-color: ${({ textColor }) => handleColorType(textColor)};
+  border-bottom: 1px solid black;
+  border: ${props => props.isActive ? '1px dotted red' : ''};
   color: ${colors.black};
   font-size: .8rem;
+  max-height: 250px;
+  opacity: ${props => props.isActive ? '1' : '.5'};
   padding: 10px;
   text-align: left;
-  opacity: .5;
   h4 {
     font-size: 1rem;
     font-weight: bold;
@@ -18,6 +20,7 @@ export const BoxCard = styled.div`
     cursor: pointer;
     opacity: 1;
   }
+
 `;
 
 const handleColorType = status => {

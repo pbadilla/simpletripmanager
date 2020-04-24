@@ -1,111 +1,167 @@
-import React, { useState, useEffect } from 'react';
-import { connect, useSelector, useDispatch } from "react-redux";
-
-import ModalBox from '../../component/Modal';
+import React, { Fragment, useState, useEffect, Suspense } from 'react';
+import { useSelector } from "react-redux";
 
 import isEmpty from 'lodash/isEmpty';
-import { makeTrip } from '../../helpers/utils';
+import { makeTripWithStops, makeTripNoStops } from '../../helpers/utils';
+
+import { getStops } from '../../store/selectors/selectors';
+
+import { DEFAULT_CENTER_MAP, ZOOM } from './constants';
 
 import {
   GoogleMapProvider,
   InfoWindow,
   MapBox,
   Marker,
-  OverlayView,
   Polyline,
   TrafficLayer,
 } from '@googlemap-react/core';
 
+import ModalBox from '../../component/Modal';
+import Banner from "../../component/Banner";
+import Skeleton from 'react-loading-skeleton';
+
 import { Wrapper } from './styles';
 
 const GoogleMap = () => {
-  const markers = useSelector(state => state.pointsTrip.points);
+
+  const [centerPosition, setCenterPosition] = useState(DEFAULT_CENTER_MAP);
+  let zoom = ZOOM;
+  
+  // const markers = useSelector(state => state.pointsTrip.points.length);
+  const origin = useSelector(state => state.pointsTrip.origin);
+  const destination = useSelector(state => state.pointsTrip.destination);
+  const stops = useSelector(state => state.pointsTrip.stops);
   const loadingTrip = useSelector(state => state.pointsTrip.loading);
 
-  const { pointOrigin, pointOriginDest, stops } = markers;
-  const [centerPosition, setCenterPosition] = useState([30.567816, 114.0201949]);
+  const [areStops, setAreStops] = useState(false);
   const [startPosition, setStartPosition] = useState(null);
   const [endPosition, setEndPosition] = useState(null);
-  const [areStops, setAreStops] = useState(false);
-  
+  const [infoDisplay, setInfoDisplay] = useState(false);
+  const [paradas, setParadas] = useState(null);
+
+  const changeInfoDisplay = () => setInfoDisplay(display => !display)
+
+  useEffect(() => {
+    if (stops !== undefined) {
+      if (isEmpty(stops[0])) {
+        setParadas(makeTripNoStops(origin, destination));
+      } else {
+        setParadas(makeTripWithStops(origin, stops, destination));
+      }
+    }
+  }, [stops, destination, origin]);
+
   useEffect(() => {
     if (loadingTrip) {
-      if (!isEmpty(stops)) {
-        setAreStops(true);
-      }
 
-      const { _latitude: latOrigin, _longitude: lngOrigin } = pointOrigin;
+      const { _latitude: latOrigin, _longitude: lngOrigin } = origin;
       setStartPosition([parseFloat(latOrigin), parseFloat(lngOrigin)]);
     
-      const { _latitude: latDestination, _longitude: lngDestination } = pointOriginDest;
+      const { _latitude: latDestination, _longitude: lngDestination } = destination;
       setEndPosition([parseFloat(latDestination), parseFloat(lngDestination)]);
-      
-      /* TODO: mirar bien tema dce centrado */ 
+
       setCenterPosition([parseFloat(latDestination), parseFloat(lngDestination)]);
     }
 
-  }, [pointOrigin, pointOriginDest, stops, loadingTrip]);
+  }, [origin, destination, loadingTrip]);
 
-  const paradas = loadingTrip ? makeTrip(pointOrigin, stops, pointOriginDest) : null;
+  const validStops = paramStops => {
+    if (paramStops !== undefined) { 
+      return (isEmpty(paramStops[0]) ) ?  false :  true;
+    }
+  }
+
+  const dynamicZoom = (stopsParam) => {
+    if (!stopsParam) {
+      return 8;
+    }
+    const stopsLength = stopsParam.length;
+    if (stopsLength > 2 && stopsLength <= 4) {
+      return 10;
+    } else if (stopsLength > 0 && stopsLength <= 2) {
+      return 12;
+    } else {
+      return 13;
+    }
+  }
+
+  console.log('validStops(stops)', validStops(stops));
+
+  // const paradaStop = validStops(stops)
+  //   ? setParadas(makeTripWithStops(origin, stops, destination))
+  //   : '';
   
-  return (
-    <Wrapper>
-    <GoogleMapProvider>
-      <MapBox
-        apiKey="AIzaSyD1aCwKJ42a5xoT7lk4EEgdHueW0vMY8TA"
-        opts={{
-          center: {lat: centerPosition[0], lng: centerPosition[1]},
-          zoom: 11,
-        }}
-        style={{
-          height: '89vh',
-          width: '100%',
-        }}
-        useDrawing
-        useGeometry
-        usePlaces
-        useVisualization
-        onCenterChanged={() => {
-          console.log('The center of the map has changed.')
-        }}
-      />
-      {startPosition !== null &&
-        <Marker
-          id="start"
-          opts={{
-            draggable: true,
-            label: 'Start',
-            position: {lat: startPosition[0], lng: startPosition[1]},
-          }}
-        />
-      }
-      {endPosition !== null &&
-        <Marker
-          id="end"
-          opts={{
-            draggable: true,
-            label: 'End',
-            position: {lat: endPosition[0], lng: endPosition[1]},
-          }}
-        />
-      }
+  // console.log('paradaStop', paradaStop);
+  //   : setParadas(makeTripNoStops(origin, destination))
 
-      { areStops &&
+  return (
+    <Suspense fallback={<Skeleton height="100%" width="100%" />}>
+      <Wrapper>
+      <GoogleMapProvider>
+        <MapBox
+          apiKey="AIzaSyD1aCwKJ42a5xoT7lk4EEgdHueW0vMY8TA"
+          opts={{
+            center: {lat: centerPosition[0], lng: centerPosition[1]},
+            zoom: dynamicZoom(stops),
+          }}
+          style={{
+            height: '89vh',
+            width: '100%',
+          }}
+          useDrawing
+          useGeometry
+          usePlaces
+          useVisualization
+          onLoad={map => {
+            const bounds = new window.google.maps.LatLngBounds();
+            map.fitBounds(bounds);
+          }}
+        />
+      
+        <TrafficLayer />
+        
+          {startPosition !== null && (
+            <div>
+              <Marker
+                id="start"
+                opts={{
+                  draggable: false,
+                  label: 'Start',
+                  position: {lat: startPosition[0], lng: startPosition[1]},
+                }}
+              />
+                <Banner  position={{lat: startPosition[0], lng: startPosition[1]}}/>
+            </div>
+            )
+        }
+
+        {endPosition !== null &&
+          <Marker
+            id="end"
+            opts={{
+              draggable: false,
+              label: 'End',
+              position: {lat: endPosition[0], lng: endPosition[1]},
+            }}
+          />
+        }
+
+        {validStops(stops) &&
           stops.map(stop => {
             const { point, id } = stop;
-            const { _latitude: latMarker, _longitude: lngMarker} = point;
-
-            console.log('id en map', id);
+            const { _latitude: latMarker, _longitude: lngMarker } = point
             return (
-              <div>
+              <Fragment>
                 <Marker
                   id={`stop-${id}`}
                   opts={{
-                    draggable: true,
+                    draggable: false,
                     label: 'stop',
                     position: {lat: parseFloat(latMarker), lng: parseFloat(lngMarker)},
                   }}
-                />
+                  onClick={changeInfoDisplay}
+                  />
                 
                 <InfoWindow
                   id={id}
@@ -115,40 +171,35 @@ const GoogleMap = () => {
                     disableAutoPan: false,
                   }}
                   data-test={`Stop ${id}`}
-                  visible
-              >
+                  visible={infoDisplay}
+                  onCloseClick={() => setInfoDisplay(false)}
+                >
                   <ModalBox tripId={id} />
                 </InfoWindow>
-              </div>
+              </Fragment>
             )
           })
         }
-        
+
         {areStops &&
           <Polyline id="polyline"
             opts={{
-              path: Array.from(paradas),
+              path: Array.from(paradas[1]),
               strokeColor: '#FF0000',
               geodesic: true,
               strokeOpacity: 1.0,
               strokeWeight: 2, 
-            }} />
-      }
-
-      {loadingTrip &&
-        <OverlayView position={{ lat: centerPosition[0], lng: centerPosition[1] }}>
-          <h2>PRUEBA</h2>
-        </OverlayView>
-      }
-
-      <TrafficLayer />
-
+          }} />
+        }
+        
       </GoogleMapProvider>
       </Wrapper>
+      
+  </Suspense>
   )
 };
 
-export default connect()(GoogleMap);
+export default React.memo(GoogleMap);
 
 
 

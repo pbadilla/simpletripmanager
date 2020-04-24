@@ -1,15 +1,20 @@
 import React, { Fragment } from 'react'
-import { GreatThings, BeautifulQuestions, SignalNoise, Thursday, ReadySetGo, SunnyMorning } from 'moving-letters'
+import { Loading, BannerLoading, LoaderDots } from './styles';
 
 const LoadingBanner = () => {
   return (
     <Fragment>
-      <SunnyMorning text='Sunny Morning' />
-      <GreatThings text='Great Things' />
-      <BeautifulQuestions text="Beautiful Questions" />
-      <SignalNoise text='Signal Noise'/>
-      <Thursday text='Thursday'/>
-      <ReadySetGo text='Ready Set Go'/>
+      <Loading>
+        <BannerLoading>
+          <div>Sometimes you have to wait ... to enjoy great things</div>
+        </BannerLoading>
+        <LoaderDots>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+        </LoaderDots>
+      </Loading>
     </Fragment>
   )
 }

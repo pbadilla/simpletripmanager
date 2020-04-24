@@ -1,11 +1,5 @@
 import styled from 'styled-components';
 
-const baseColor = '#398B93';
-const borderRadius = '10px';
-const imageBig = '100px';
-const imageSmall = '60px';
-const padding = '10px';
-
 export const ContentStop = styled.div`
   margin-top: 2rem;
     table {

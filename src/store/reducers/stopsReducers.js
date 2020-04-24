@@ -32,4 +32,3 @@ export default function stopsTrip(state = initialState, action) {
   }
 }
 
-export const getStop = state => state.stop;

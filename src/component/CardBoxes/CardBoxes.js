@@ -1,24 +1,33 @@
-import React, { useEffect } from "react";
+import React, { useEffect, Suspense } from "react";
+
 import { connect, useDispatch } from "react-redux";
 import { fetchTrips } from "../../store/actions";
-import { getTrips } from '../../store/reducers';
+import { getTrips } from '../../store/selectors/selectors';
 import store from '../../store';
 
-import CardBox from '../CardBox';
+import Skeleton from 'react-loading-skeleton';
+
+const CardBoxLazy = React.lazy(() => import('../CardBox'));
 
 const CardBoxes = ({ isError, isLoading, fetchTrips, tripsArray }) => {
-
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const trips = () => dispatch(fetchTrips());
+    // const trips = () => dispatch(fetchTrips());
     fetchTrips();
   }, [dispatch]);
 
   const tripsItems = store.getState().trips;
+  
   const { trips } = tripsItems;
   
-  return trips.map(trip => <CardBox id="cardBoc" props={ trip } /> );
+  return trips.map((trip, index) => {
+    return (
+      <Suspense fallback={<Skeleton height="100%" />}>
+        <CardBoxLazy id={JSON.stringify(index)} props={trip} />
+      </Suspense>
+    )
+  });
 }
 
 const mapStateToProps = state => ({
