@@ -8,9 +8,9 @@ import { Wrapper } from './styles';
 const Banner = () => {
 
   return (
-    <Flex alignItems='center' textAlign="right" justifyContent="space-between">
+    <Flex alignItems='center' textAlign="right" justifyContent="end">
       <Box mr={2}>
-        <Heading.h3>{localStorage.getItem('driverName')}</Heading.h3>
+        <Heading.h3></Heading.h3>
       </Box>
      
       <Icon

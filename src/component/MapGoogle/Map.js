@@ -2,6 +2,8 @@ import React, { Fragment, useState, useEffect, Suspense } from 'react';
 import { useSelector } from "react-redux";
 
 import isEmpty from 'lodash/isEmpty';
+import get from 'lodash/get';
+
 import { makeTripWithStops, makeTripNoStops } from '../../helpers/utils';
 
 import { getStops } from '../../store/selectors/selectors';
@@ -16,6 +18,8 @@ import {
   Polyline,
   TrafficLayer,
 } from '@googlemap-react/core';
+
+import { center, featureCollection, point, midpoint } from '@turf/turf';
 
 import ModalBox from '../../component/Modal';
 import Banner from "../../component/Banner";
@@ -37,6 +41,9 @@ const GoogleMap = () => {
   const [areStops, setAreStops] = useState(false);
   const [startPosition, setStartPosition] = useState(null);
   const [endPosition, setEndPosition] = useState(null);
+  const [middle, setMiddle] = useState(false);
+
+
   const [infoDisplay, setInfoDisplay] = useState(false);
   const [paradas, setParadas] = useState(null);
 
@@ -62,12 +69,21 @@ const GoogleMap = () => {
       setEndPosition([parseFloat(latDestination), parseFloat(lngDestination)]);
 
       setCenterPosition([parseFloat(latDestination), parseFloat(lngDestination)]);
+
+      const pointStart = point( [parseFloat(latOrigin), parseFloat(lngOrigin)] );
+      const pointEnd =  point( [parseFloat(latDestination), parseFloat(lngDestination)] );
+      const midpointTurf = midpoint(pointStart, pointEnd);
+      const middle = get(get(midpointTurf, 'geometry'), 'coordinates');
+      setMiddle([middle[0], middle[1]])
     }
 
   }, [origin, destination, loadingTrip]);
 
+  let travel = null;
+
   const validStops = paramStops => {
     if (paramStops !== undefined) { 
+      travel = !isEmpty(paramStops[0]) ? makeTripWithStops(origin, paramStops, destination) : makeTripNoStops(origin,destination);
       return (isEmpty(paramStops[0]) ) ?  false :  true;
     }
   }
@@ -82,18 +98,9 @@ const GoogleMap = () => {
     } else if (stopsLength > 0 && stopsLength <= 2) {
       return 12;
     } else {
-      return 13;
+      return 11;
     }
   }
-
-  console.log('validStops(stops)', validStops(stops));
-
-  // const paradaStop = validStops(stops)
-  //   ? setParadas(makeTripWithStops(origin, stops, destination))
-  //   : '';
-  
-  // console.log('paradaStop', paradaStop);
-  //   : setParadas(makeTripNoStops(origin, destination))
 
   return (
     <Suspense fallback={<Skeleton height="100%" width="100%" />}>
@@ -102,7 +109,7 @@ const GoogleMap = () => {
         <MapBox
           apiKey="AIzaSyD1aCwKJ42a5xoT7lk4EEgdHueW0vMY8TA"
           opts={{
-            center: {lat: centerPosition[0], lng: centerPosition[1]},
+            center: middle ? {lat: middle[0], lng: middle[1]} : {lat: centerPosition[0], lng: centerPosition[1]},
             zoom: dynamicZoom(stops),
           }}
           style={{
@@ -119,21 +126,21 @@ const GoogleMap = () => {
           }}
         />
       
-        <TrafficLayer />
         
-          {startPosition !== null && (
-            <div>
-              <Marker
-                id="start"
-                opts={{
-                  draggable: false,
-                  label: 'Start',
-                  position: {lat: startPosition[0], lng: startPosition[1]},
-                }}
-              />
-                <Banner  position={{lat: startPosition[0], lng: startPosition[1]}}/>
-            </div>
-            )
+        
+        {startPosition !== null && (
+          <div>
+            <Marker
+              id="start"
+              opts={{
+                draggable: false,
+                label: 'Start',
+                position: {lat: startPosition[0], lng: startPosition[1]},
+              }}
+            />
+              <Banner  position={{lat: startPosition[0], lng: startPosition[1]}}/>
+          </div>
+          )
         }
 
         {endPosition !== null &&
@@ -181,10 +188,10 @@ const GoogleMap = () => {
           })
         }
 
-        {areStops &&
+        {validStops(stops) &&
           <Polyline id="polyline"
             opts={{
-              path: Array.from(paradas[1]),
+              path: Array.from(travel),
               strokeColor: '#FF0000',
               geodesic: true,
               strokeOpacity: 1.0,
@@ -192,6 +199,7 @@ const GoogleMap = () => {
           }} />
         }
         
+        <TrafficLayer />
       </GoogleMapProvider>
       </Wrapper>
       

@@ -16,7 +16,7 @@ const ModalBox = ({ tripId, stopInfo }) => {
 
   const dispatch = useDispatch();
 
-  const loadingSucess = useSelector(state => state.stopTrip.success);
+  const loadingSuccess = useSelector(state => state.stopTrip.success);
 
   const [open, setOpen] = useState(false);
   const [loadData, setLoadData] = useState(false);
@@ -25,11 +25,11 @@ const ModalBox = ({ tripId, stopInfo }) => {
   function onOpenModal() {
     setOpen(true);
     dispatch(fetchStops(tripId));
-  };
+  }
 
   function onCloseModal() {
     setOpen(false);
-  };
+  }
 
   useEffect(() => {
     const stopInfoDATA = get(stopInfo, 'stopTrip');
@@ -37,7 +37,7 @@ const ModalBox = ({ tripId, stopInfo }) => {
       setInfoData(stopInfoDATA);
       setLoadData(true);
     }
-  },[loadingSucess, stopInfo]);
+  },[loadingSuccess, stopInfo]);
 
     return (
       <div>
@@ -47,7 +47,7 @@ const ModalBox = ({ tripId, stopInfo }) => {
 
           {loadData && 
             <ContentStop>
-                <table cellSacing="0">
+                <table cellSpacing="0">
                 <thead>
                   <tr>
                     <th>Username</th>
