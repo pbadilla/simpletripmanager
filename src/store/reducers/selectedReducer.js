@@ -1,6 +1,6 @@
 import { SELECTED_TRIP } from "../actions/actionTypes";
 
-const initialState = null;
+const initialState = {};
 
 export default function pointsTrip(state = initialState, action) {
 

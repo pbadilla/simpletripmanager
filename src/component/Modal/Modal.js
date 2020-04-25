@@ -1,16 +1,16 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Suspense } from 'react';
 import PropTypes from 'prop-types';
 import { useSelector, useDispatch, connect } from "react-redux";
 import get from 'lodash/get';
-import { toMinutes } from '../../helpers/utils';
 
 import fetchStops from '../../store/actions/stopsActions';
 
 import Modal from 'react-responsive-modal';
+import ContentStop from '../ContentStop';
 
-import { Button, Heading, Icon } from 'pcln-design-system';
-import { ContentStop } from './styles';
+import { Button, Heading } from 'pcln-design-system';
 import "react-responsive-modal/styles.css";
+import Skeleton from 'react-loading-skeleton';
 
 const ModalBox = ({ tripId, stopInfo }) => {
 
@@ -39,37 +39,21 @@ const ModalBox = ({ tripId, stopInfo }) => {
     }
   },[loadingSuccess, stopInfo]);
 
-    return (
-      <div>
-        <Button size='small' onClick={onOpenModal}>{`More Info ${tripId}`}</Button>
-        <Modal open={open} onClose={onCloseModal} little>
-          <Heading.h2>Information Stop</Heading.h2>
+  console.log('loadingSuccess', loadingSuccess);
 
-          {loadData && 
-            <ContentStop>
-                <table cellSpacing="0">
-                <thead>
-                  <tr>
-                    <th>Username</th>
-                    <th>Address</th>
-                    <th>Paid?</th>
-                    <th>StopTime</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>{infoData.userName}</td>
-                    <td>{infoData.address}</td>
-                    <td>{infoData.paid ? <Icon name='Coupon' color='green'/>: <Icon name='Coupon' color='red'/>}</td>
-                    <td>{toMinutes(infoData.stopTime)}</td>
-                  </tr>
-                </tbody>
-              </table>
-            </ContentStop>
-          }
-        </Modal>
-      </div>
-    );
+  return (
+    <div>
+      <Button size='small' onClick={onOpenModal}>{`More Info ${tripId}`}</Button>
+      <Modal open={open} onClose={onCloseModal}>
+        <Heading.h2>Information Stop</Heading.h2>
+
+      { !loadingSuccess
+        ? <Skeleton width="659px" height="125px" color="#202020" highlightColor="#444" count={2} />
+        : <ContentStop {...infoData} />
+      }
+      </Modal>
+    </div>
+  );
 }
 
 ModalBox.propTypes = {

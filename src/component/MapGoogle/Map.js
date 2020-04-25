@@ -31,8 +31,7 @@ const GoogleMap = () => {
 
   const [centerPosition, setCenterPosition] = useState(DEFAULT_CENTER_MAP);
   let zoom = ZOOM;
-  
-  // const markers = useSelector(state => state.pointsTrip.points.length);
+
   const origin = useSelector(state => state.pointsTrip.origin);
   const destination = useSelector(state => state.pointsTrip.destination);
   const stops = useSelector(state => state.pointsTrip.stops);
@@ -42,7 +41,6 @@ const GoogleMap = () => {
   const [startPosition, setStartPosition] = useState(null);
   const [endPosition, setEndPosition] = useState(null);
   const [middle, setMiddle] = useState(false);
-
 
   const [infoDisplay, setInfoDisplay] = useState(false);
   const [paradas, setParadas] = useState(null);
@@ -83,7 +81,9 @@ const GoogleMap = () => {
 
   const validStops = paramStops => {
     if (paramStops !== undefined) { 
-      travel = !isEmpty(paramStops[0]) ? makeTripWithStops(origin, paramStops, destination) : makeTripNoStops(origin,destination);
+      travel = !isEmpty(paramStops[0])
+        ? makeTripWithStops(origin, paramStops, destination)
+        : makeTripNoStops(origin, destination);
       return (isEmpty(paramStops[0]) ) ?  false :  true;
     }
   }
@@ -96,16 +96,16 @@ const GoogleMap = () => {
     if (stopsLength > 2 && stopsLength <= 4) {
       return 10;
     } else if (stopsLength > 0 && stopsLength <= 2) {
-      return 12;
-    } else {
       return 11;
+    } else {
+      return 12;
     }
   }
 
   return (
     <Suspense fallback={<Skeleton height="100%" width="100%" />}>
       <Wrapper>
-      <GoogleMapProvider>
+        <GoogleMapProvider>
         <MapBox
           apiKey="AIzaSyD1aCwKJ42a5xoT7lk4EEgdHueW0vMY8TA"
           opts={{
@@ -201,8 +201,7 @@ const GoogleMap = () => {
         
         <TrafficLayer />
       </GoogleMapProvider>
-      </Wrapper>
-      
+    </Wrapper>
   </Suspense>
   )
 };

@@ -6,7 +6,7 @@ import { get } from 'lodash';
 
 import fetchTripsPoints from '../../store/actions/tripsActions';
 import fetchSelectedTrip from '../../store/actions/selectTripAction';
-import { DriverSetContext } from '../../context/driverNameContext';
+import driverNameContext from '../../context/driverNameContext';
 
 import Skeleton from 'react-loading-skeleton';
 
@@ -27,20 +27,15 @@ const CardBox = (props, id) => {
   const points = useSelector(state => ({ pointOrigin, pointOriginDest, stops }));
   const selected = useSelector(state => state.selectedTrip);
 
-  // const { setDriverName } = useContext(DriverSetContext);
-
-  console.log('setDriverName', useContext(DriverSetContext));
+  const { setDriver } = useContext(driverNameContext);
 
   const dispatch = useDispatch();
 
   function pointsOnMap() {
     dispatch((fetchTripsPoints(points)));
-    dispatch((fetchSelectedTrip(index, driverName)));
-
-    // setDriverName(driverName);
+    dispatch((fetchSelectedTrip(index, driverName, status)));
+    setDriver(driverName);
     localStorage.setItem('driverName', driverName);
-
-    // Travel Point
     setIsActive(true);
   }
 

@@ -23,7 +23,7 @@ const CardBoxes = ({ isError, isLoading, fetchTrips, tripsArray }) => {
   
   return trips.map((trip, index) => {
     return (
-      <Suspense fallback={<Skeleton height="100%" />}>
+      <Suspense fallback={<Skeleton height="100%" color="#202020" highlightColor="#444" />}>
         <CardBoxLazy id={JSON.stringify(index)} props={trip} />
       </Suspense>
     )

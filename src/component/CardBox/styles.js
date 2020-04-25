@@ -47,7 +47,6 @@ export const Status = styled.div`
     div {
       flex-grow: 2;
       text-transform: uppercase;
-
     }
     svg {
       color: ${ colors.grey};

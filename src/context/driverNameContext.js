@@ -1,17 +1,9 @@
 /* eslint-disable no-empty-function */
-import React, { createContext, useState } from "react";
+import React, { createContext } from "react";
 
-export const DriverStateContext = React.createContext();
-export const DriverSetContext = React.createContext();
+const driverNameContext = createContext({
+  driver: "DRIVER NAME",
+  setDriver: () => { }
+});
 
-function DriverProvider({children}) {
-  const [driverName, setDriverName] = useState();
-  return (
-    <DriverStateContext.Provider value={driverName}>
-      <DriverSetContext.Provider value={setDriverName}>
-        {children}
-      </DriverSetContext.Provider>
-    </DriverStateContext.Provider>
-  )
-}
-export default DriverProvider;
+export default driverNameContext;
