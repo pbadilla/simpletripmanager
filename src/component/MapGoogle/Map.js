@@ -103,7 +103,7 @@ const GoogleMap = () => {
 
   return (
     <Suspense fallback={<Skeleton height="100%" width="100%" />}>
-      <Wrapper>
+      <Wrapper id="map">
         <GoogleMapProvider>
         <MapBox
           apiKey="AIzaSyD1aCwKJ42a5xoT7lk4EEgdHueW0vMY8TA"

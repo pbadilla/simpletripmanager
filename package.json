@@ -58,6 +58,7 @@
   },
   "devDependencies": {
     "@testing-library/react": "^10.0.3",
+    "cypress": "^4.4.1",
     "react-app-rewired": "^2.1.5"
   }
 }

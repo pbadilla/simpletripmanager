@@ -21,28 +21,28 @@ const Home = () => {
     <driverNameContext.Provider value={value}>
       <Layout>
         <Container>
-          <Header>
+          <Header id="Header">
             <h1>
               <img src="/images/Logo_Small.png" title="Simple Trip Manager v.1.0" alt="Logo for Simple Trip Manager app" /> v.1.0</h1>
             <NameDriver>
-                <Banner />
+              <Banner id="Banner" />
             </NameDriver>
           </Header>
           
           <Body>
             <Content>
             <Suspense fallback={<LoadingComponent />}>
-              <CardBoxesLazy />
+              <CardBoxesLazy/>
             </Suspense>
             </Content>
             <Sidebar>
             <Suspense fallback={<LoadingBanner />}>
-                <MapGoogleLazy />
+                <MapGoogleLazy id="map" />
             </Suspense>
             </Sidebar>
           </Body>
 
-          <Footer>
+          <Footer id="footer">
             <h4>by @pachibadilla</h4>
           </Footer>
         </Container>

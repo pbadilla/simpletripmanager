@@ -13,9 +13,12 @@ import Skeleton from 'react-loading-skeleton';
 import { Box, Heading, Icon, Text } from 'pcln-design-system';
 import { BoxCard, Status } from './styles';
 
-const CardBox = (props, id) => {
+const CardBox = props => {
 
-  const { id: index } = props;
+  const { index } = props;
+
+  console.log('props', index);
+
   const [isActive, setIsActive] = useState(false);
   const tripsProps = get(props, 'props');
 
@@ -45,13 +48,11 @@ const CardBox = (props, id) => {
 
   return (
     <Suspense fallback={<Skeleton />}>
+      <div id={`cardTrip-${index}`} name={driverName}>
       <BoxCard 
         color='black'
         bgColor={status}
         onClick={pointsOnMap}
-        id={index}
-        dataI-test={`Driver${index}`}
-        key={`Driver${index}`}
       >
         <Heading.h4>{driverName} {isActive && <Icon name="Cars" size='18' />} </Heading.h4>
         <Status iconColor={status} >
@@ -67,7 +68,8 @@ const CardBox = (props, id) => {
           <Text bold>Destination:</Text>
           <Text>{addressDestination}</Text>
         </Box>
-      </BoxCard>
+        </BoxCard>
+      </div>
     </Suspense>
   );
 }
