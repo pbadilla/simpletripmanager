@@ -6,9 +6,7 @@ import get from 'lodash/get';
 
 import { makeTripWithStops, makeTripNoStops } from '../../helpers/utils';
 
-import { getStops } from '../../store/selectors/selectors';
-
-import { DEFAULT_CENTER_MAP, ZOOM } from './constants';
+import { DEFAULT_CENTER_MAP } from './constants';
 
 import {
   GoogleMapProvider,
@@ -19,7 +17,7 @@ import {
   TrafficLayer,
 } from '@googlemap-react/core';
 
-import { center, featureCollection, point, midpoint } from '@turf/turf';
+import { point, midpoint } from '@turf/turf';
 
 import ModalBox from '../../component/Modal';
 import Banner from "../../component/Banner";
@@ -30,22 +28,23 @@ import { Wrapper } from './styles';
 const GoogleMap = () => {
 
   const [centerPosition, setCenterPosition] = useState(DEFAULT_CENTER_MAP);
-  let zoom = ZOOM;
 
   const origin = useSelector(state => state.pointsTrip.origin);
   const destination = useSelector(state => state.pointsTrip.destination);
   const stops = useSelector(state => state.pointsTrip.stops);
   const loadingTrip = useSelector(state => state.pointsTrip.loading);
 
-  const [areStops, setAreStops] = useState(false);
   const [startPosition, setStartPosition] = useState(null);
   const [endPosition, setEndPosition] = useState(null);
   const [middle, setMiddle] = useState(false);
 
   const [infoDisplay, setInfoDisplay] = useState(false);
+  // eslint-disable-next-line
   const [paradas, setParadas] = useState(null);
 
-  const changeInfoDisplay = () => setInfoDisplay(display => !display)
+  const changeInfoDisplay = (id) => {
+    setInfoDisplay(id)
+  }
 
   useEffect(() => {
     if (stops !== undefined) {
@@ -125,8 +124,6 @@ const GoogleMap = () => {
             map.fitBounds(bounds);
           }}
         />
-      
-        
         
         {startPosition !== null && (
           <div>
@@ -138,7 +135,7 @@ const GoogleMap = () => {
                 position: {lat: startPosition[0], lng: startPosition[1]},
               }}
             />
-              <Banner  position={{lat: startPosition[0], lng: startPosition[1]}}/>
+              <Banner position={{lat: startPosition[0], lng: startPosition[1]}}/>
           </div>
           )
         }
@@ -161,28 +158,30 @@ const GoogleMap = () => {
             return (
               <Fragment>
                 <Marker
-                  id={`stop-${id}`}
+                  key={`stop-${id}`}
                   opts={{
                     draggable: false,
                     label: 'stop',
                     position: {lat: parseFloat(latMarker), lng: parseFloat(lngMarker)},
                   }}
-                  onClick={changeInfoDisplay}
+                  onClick={() => changeInfoDisplay(id)}
                   />
-                
-                <InfoWindow
-                  id={id}
-                  opts={{
-                    content: `Stop ${id}`,
-                    position: { lat: parseFloat(latMarker), lng: parseFloat(lngMarker) },
-                    disableAutoPan: false,
-                  }}
+                {infoDisplay &&
+                  <InfoWindow
+                    id={id}
+                    key={id}
+                    opts={{
+                      content: `Stop ${id}`,
+                      position: { lat: parseFloat(latMarker), lng: parseFloat(lngMarker) },
+                      disableAutoPan: false,
+                    }}
                   data-test={`Stop ${id}`}
-                  visible={infoDisplay}
-                  onCloseClick={() => setInfoDisplay(false)}
-                >
-                  <ModalBox tripId={id} />
-                </InfoWindow>
+                  visible= {infoDisplay === id ? true : false }
+                    onCloseClick={() => setInfoDisplay(false)}
+                  >
+                    <ModalBox tripId={id} />
+                  </InfoWindow>
+                }
               </Fragment>
             )
           })

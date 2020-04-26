@@ -1,4 +1,4 @@
-import React, { Suspense, useState, useContext } from "react";
+import React, { Suspense, useContext } from "react";
 import { connect } from "react-redux";
 import * as actionCreators from "../store/actions";
 
@@ -22,7 +22,8 @@ const Home = () => {
       <Layout>
         <Container>
           <Header>
-            <h1><img src="/images/Logo_Small.png" title="Simple Trip Manager v.1.0" /> v.1.0</h1>
+            <h1>
+              <img src="/images/Logo_Small.png" title="Simple Trip Manager v.1.0" alt="Logo for Simple Trip Manager app" /> v.1.0</h1>
             <NameDriver>
                 <Banner />
             </NameDriver>

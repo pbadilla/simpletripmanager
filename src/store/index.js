@@ -1,7 +1,7 @@
 import { createStore, compose, applyMiddleware, combineReducers } from "redux";
 import reduxThunk from "redux-thunk";
 
-import trips from "./reducers";
+import trips from "./reducers/tripsReducer";
 import selectedTrip from './reducers/selectedReducer';
 import pointsTrip from './reducers/pointsReducer';
 import stopTrip from './reducers/stopsReducers';

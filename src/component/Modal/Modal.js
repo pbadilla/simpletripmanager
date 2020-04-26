@@ -1,4 +1,4 @@
-import React, { useState, useEffect, Suspense } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useSelector, useDispatch, connect } from "react-redux";
 import get from 'lodash/get';
@@ -19,7 +19,7 @@ const ModalBox = ({ tripId, stopInfo }) => {
   const loadingSuccess = useSelector(state => state.stopTrip.success);
 
   const [open, setOpen] = useState(false);
-  const [loadData, setLoadData] = useState(false);
+
   const [infoData, setInfoData] = useState(null);
 
   function onOpenModal() {
@@ -35,11 +35,8 @@ const ModalBox = ({ tripId, stopInfo }) => {
     const stopInfoDATA = get(stopInfo, 'stopTrip');
     if (stopInfoDATA ) {
       setInfoData(stopInfoDATA);
-      setLoadData(true);
     }
   },[loadingSuccess, stopInfo]);
-
-  console.log('loadingSuccess', loadingSuccess);
 
   return (
     <div>

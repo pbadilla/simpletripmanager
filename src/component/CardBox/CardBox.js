@@ -45,13 +45,13 @@ const CardBox = (props, id) => {
 
   return (
     <Suspense fallback={<Skeleton />}>
-      <BoxCard p={2}
+      <BoxCard 
         color='black'
-        bg="lightOrange"
-        textColor={status}
+        bgColor={status}
         onClick={pointsOnMap}
-        isActive={isActive}
         id={index}
+        dataI-test={`Driver${index}`}
+        key={`Driver${index}`}
       >
         <Heading.h4>{driverName} {isActive && <Icon name="Cars" size='18' />} </Heading.h4>
         <Status iconColor={status} >

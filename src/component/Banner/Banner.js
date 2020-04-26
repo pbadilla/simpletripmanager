@@ -1,12 +1,10 @@
-import React, { useEffect, useContext, cloneElement } from 'react';
+import React from 'react';
 import { useSelector } from "react-redux";
 
 import isEmpty from 'lodash/isEmpty';
 
-import driverNameContext from '../../context/driverNameContext';
-
 import { Heading, Icon, Flex, Box } from 'pcln-design-system';
-import { Wrapper, WrapperIcon } from './styles';
+import { WrapperIcon } from './styles';
 import colors from '../../styles/colors';
 
 const Banner = () => {
@@ -24,7 +22,7 @@ const Banner = () => {
         </Box>
         <Icon
           name="Cars"
-          color='white'
+          color={colors.white}
           size={25}
         />
       </Flex>)

@@ -27,9 +27,21 @@ export const Wrapper = styled.div`
   }
 `;
 
-export const WrapperIcon = styled.span `
+
+export const WrapperIcon = styled.div `
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  @keyframes blink{
+    0%{opacity: 0;}
+    50%{opacity: .5;}
+    100%{opacity: 1;}
+  }
   svg {
+    top: 3px;
+    position: relative;
     fill: ${({ status }) => handleColorType(status)};
+    animation: blink 1s linear infinite;
   }
 `;
 

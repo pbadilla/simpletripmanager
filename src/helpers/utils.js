@@ -1,10 +1,10 @@
-import isEmpty from 'lodash/isEmpty';
+/* eslint-disable */
 
 export function extractStops(dataPoints, level) {
   let arrayTemp = [];
 
   if (level !== 'noLevel') {
-    const pointsStops = dataPoints.map(stop => {
+    dataPoints.map(stop => {
       const { point } = stop;
       const { _latitude: latStop, _longitude: lngStop } = point;
       arrayTemp.push({ lat: parseFloat(latStop), lng: parseFloat(lngStop) });
@@ -23,6 +23,7 @@ export function makeTripWithStops(start, stops, end) {
   const middleStops = extractStops(stops, 'arrayLevel');
   const makeTrip = [...startStops, ...middleStops, ...endStops];
 
+  // eslint-disable-next-line
   return makeTrip;
 }
 
@@ -37,11 +38,11 @@ export function makeTripNoStops(start, end) {
 export function toMinutes(timeIso) {
   const str = timeIso;
   const parts = str.slice(0, -1).split('T');
-  const dateComponent = parts[0];
   const timeComponent = parts[1];
 
   return timeComponent;
 }
+
 
 export const ConsoleLog = ({ children }) => {
   console.log(children);

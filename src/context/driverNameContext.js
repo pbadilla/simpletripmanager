@@ -1,5 +1,5 @@
 /* eslint-disable no-empty-function */
-import React, { createContext } from "react";
+import { createContext } from "react";
 
 const driverNameContext = createContext({
   driver: "DRIVER NAME",

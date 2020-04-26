@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import colors from '../../styles/colors';
 
 export const BoxCard = styled.div`
-  background-color: ${({ textColor }) => handleColorType(textColor)};
+  background-color: ${({ bgColor }) => handleColorType(bgColor)};
   border-bottom: 1px solid black;
   border: ${props => props.isActive ? '1px dotted red' : ''};
   color: ${colors.black};
