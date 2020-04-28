@@ -1,37 +1,38 @@
-  
-import React from 'react'
-import { Provider } from 'react-redux';
-import { render, fireEvent, cleanup, waitForElement, within, screen } from '@testing-library/react';
-import "@testing-library/jest-dom/extend-expect";
-import axios from 'axios';
 
-import Home from '../pages/Home';
-import store from '../store';
-
-import FIXTURES from './fixtures.json';
+import mockAxios from 'axios';
+import configureMockStore from 'redux-mock-store';
+import thunk from 'redux-thunk';
+import * as actions from '../store/actions';
+import { fetchTrips , fetchTripsStarted } from '../store/actions';
+import {
+  FETCH_TRIPS_STARTED,
+  FETCH_TRIPS_FAILURE,
+  FETCH_TRIPS_SUCCESS
+} from "../store/actions/actionTypes";
+import FIXTURES from '../tests/fixtures.json';
 
 jest.mock('axios');
 
+test('Retrieve transaction data based on a date range', async () => {
+  const middlewares = [thunk];
+  const mockStore = configureMockStore(middlewares);
+  const store = mockStore();
 
-const trips = FIXTURES;
+  const mockData = { FIXTURES }
 
-afterEach(cleanup);
+  mockAxios.post.mockResolvedValue(() =>
+    Promise.resolve({ data: mockData }),
+  );
 
-const renderComponent = ({children}) => render(
-  <Provider store={store}>
-    {children}
-  </Provider>
-);
+  const expectedActions = [
+    {
+      'type': FETCH_TRIPS_SUCCESS,
+      'payload': { isLoading: true }
+    }
+  ];
 
+  await store.dispatch(fetchTripsStarted);
 
-describe('should LOAD DATA from endpoint', () => {
-  test('render LOADING STATE followed by TRIPS', async () => {
-    axios.get.mockReturnValue(new Promise(resolve => resolve(trips)));
-    const { getByTestId, container} = renderComponent(<Home />);
-    
-    const element = screen.getByTestId('Banner');
-
-    expect(element).toBeInTheDocument();
-  });
-
+  expect(store.getState()).toEqual({});
+  expect(mockAxios.post).toHaveBeenCalledTimes(0);
 });

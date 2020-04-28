@@ -9,7 +9,6 @@ import axios from "axios";
 export const fetchTrips = () => {
   return dispatch => {
     dispatch(fetchTripsStarted());
-
     axios
       .get("https://europe-west1-metropolis-fe-test.cloudfunctions.net/api/trips")
       .then(res => {
@@ -21,7 +20,7 @@ export const fetchTrips = () => {
   };
 };
 
-const fetchTripsStarted = () => {
+export const fetchTripsStarted = () => {
   return {
     type: FETCH_TRIPS_STARTED,
     payload: {
@@ -34,7 +33,8 @@ const fetchTripsSuccess = trips => {
   return {
     type: FETCH_TRIPS_SUCCESS,
     payload: {
-      trips
+      trips,
+      isLoading: true
     }
   };
 };

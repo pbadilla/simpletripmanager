@@ -26,7 +26,7 @@ const initialState = {
 
 // export const FETCH_TRIPS_FAILURE = "FETCH_TRIPS_FAILURE";
 
-describe('TRIPS REDUCERS', () => {
+xdescribe('TRIPS REDUCERS', () => {
 
   xtest("SHOULD return the initial state of TRIPS object", () => {
     expect(trips(undefined, {})).toEqual(initialState);

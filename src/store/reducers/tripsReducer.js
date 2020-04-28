@@ -21,7 +21,7 @@ export default function trips(state = initialState, action) {
     case FETCH_TRIPS_SUCCESS:
       return {
         ...state,
-        loading: false,
+        loading: true,
         error: null,
         trips: action.payload.trips
       };

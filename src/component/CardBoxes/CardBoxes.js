@@ -1,5 +1,5 @@
 /* eslint-disable */
-import React, { useEffect, Suspense } from "react";
+import React, { Fragment, useEffect, Suspense } from "react";
 
 import { connect, useDispatch } from "react-redux";
 import { fetchTrips } from "../../store/actions";
@@ -7,6 +7,7 @@ import { getTrips } from '../../store/selectors/selectors';
 import store from '../../store';
 
 import Skeleton from 'react-loading-skeleton';
+import Loaded from "../Loaded";
 
 const CardBoxLazy = React.lazy(() => import('../CardBox'));
 
@@ -14,7 +15,6 @@ const CardBoxes = ({ isError, isLoading, fetchTrips, tripsArray }) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    // const trips = () => dispatch(fetchTrips());
     fetchTrips();
   }, [dispatch]);
 
@@ -24,8 +24,10 @@ const CardBoxes = ({ isError, isLoading, fetchTrips, tripsArray }) => {
   
   return trips.map((trip, index) => {
     return (
-      <Suspense fallback={<Skeleton height="100%" color="#202020" highlightColor="#444" />}>
-        <CardBoxLazy index={index} props={trip} />
+      <Suspense fallback={<Loaded />}>
+        <Fragment>
+          <CardBoxLazy index={index} props={trip} />
+        </Fragment>
       </Suspense>
     )
   });
